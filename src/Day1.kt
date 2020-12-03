@@ -17,8 +17,8 @@ private fun part1(numbers: List<Int>, startIdx: Int, target: Int): Int {
 
 private fun part2(numbers: List<Int>): Int {
     for (i in 0 until numbers.size - 2) {
-        val result = part1(numbers, i+1, 2020-numbers[i])
-        if(result > Int.MIN_VALUE) return numbers[i] * result
+        val result = part1(numbers, i + 1, 2020 - numbers[i])
+        if (result > Int.MIN_VALUE) return numbers[i] * result
     }
     return Int.MIN_VALUE;
 }
