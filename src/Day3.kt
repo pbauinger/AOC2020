@@ -5,5 +5,5 @@ fun main() {
 }
 
 private fun cntT(lines: List<String>, dc: Int, dr: Int): Long {
-    return lines.filterIndexed { i, v -> v[((i / dr) * dc) % v.length] == '#' && i % dr == 0 }.size.toLong()
+    return lines.filterIndexed { i, v -> v[((i / dr) * dc) % v.length] == '#' && i % dr == 0 }.count().toLong()
 }
