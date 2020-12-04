@@ -25,12 +25,12 @@ private fun part2(lines: List<String>): Int {
             val (property, value) = part.split(":")
 
             when(property) {
-                "byr" -> if (value.toInt() in 1920..2002) cnt++
-                "iyr" -> if (value.toInt() in 2010..2020) cnt++
-                "eyr" -> if (value.toInt() in 2020..2030) cnt++
+                "byr" -> if (value.isDigit() && value.toInt() in 1920..2002) cnt++
+                "iyr" -> if (value.isDigit() && value.toInt() in 2010..2020) cnt++
+                "eyr" -> if (value.isDigit() && value.toInt() in 2020..2030) cnt++
                 "hcl" -> if(value.length == 7 && Regex("#[0-9a-fA-F]+").matches(value)) cnt++
                 "ecl" -> if(value in listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth")) cnt++
-                "pid" -> if(value.length == 9 && value.toIntOrNull() != null) cnt++
+                "pid" -> if(value.length == 9 && value.isDigit()) cnt++
                 "hgt" -> {
                     Regex("(\\d+)(cm|in)").matchEntire(value)?.let {
                         val(height, unit) = it.destructured
