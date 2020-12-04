@@ -28,7 +28,7 @@ private fun part2(lines: List<String>): Int {
                 "byr" -> if (value.isNumber() && value.toInt() in 1920..2002) cnt++
                 "iyr" -> if (value.isNumber() && value.toInt() in 2010..2020) cnt++
                 "eyr" -> if (value.isNumber() && value.toInt() in 2020..2030) cnt++
-                "hcl" -> if(value.length == 7 && Regex("#[0-9a-fA-F]+").matches(value)) cnt++
+                "hcl" -> if(Regex("#[0-9a-fA-F]{6}").matches(value)) cnt++
                 "ecl" -> if(value in listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth")) cnt++
                 "pid" -> if(value.length == 9 && value.isNumber()) cnt++
                 "hgt" -> {
