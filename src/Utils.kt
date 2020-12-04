@@ -1,1 +1,1 @@
-fun String.isDigit() = toIntOrNull() != null
+fun String.isNumber() = toIntOrNull() != null
