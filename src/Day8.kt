@@ -1,3 +1,5 @@
+import InstructionType.*
+
 fun main() {
     val originalInstructions = readLines("day8/input.in")
         .filter { it != "" }
@@ -8,14 +10,14 @@ fun main() {
     println(part1.second)
 
     //just brute force part2
-    val replaceElements = originalInstructions.filter { it.instType != InstructionType.acc }
+    val replaceElements = originalInstructions.filter { it.instType != acc }
     for (element in replaceElements) {
         val instructions = originalInstructions.copyOf()
         val idx = instructions.indexOf(element)
-        if (element.instType == InstructionType.jmp) {
-            instructions[idx] = instructions[idx].copy(instType = InstructionType.nop)
-        } else if (element.instType == InstructionType.nop) {
-            instructions[idx] = instructions[idx].copy(instType = InstructionType.jmp)
+        if (element.instType == jmp) {
+            instructions[idx] = instructions[idx].copy(instType = nop)
+        } else if (element.instType == nop) {
+            instructions[idx] = instructions[idx].copy(instType = jmp)
         }
         val part2 = executeInstructions(instructions)
         if (part2.first) println(part2.second)
@@ -23,23 +25,21 @@ fun main() {
 }
 
 private fun executeInstructions(instructions: Array<Instruction>): Pair<Boolean, Int> {
-    var acc = 0
-    var idx = 0
+    var acc = 0; var idx = 0
     var success = true
     while (idx < instructions.size) {
-        val instruction = instructions[idx]
-        if (instruction.visited) {
+        if (instructions[idx].visited) {
             success = false
             break
         }
         instructions[idx] = instructions[idx].copy(visited = true)
-        when (instruction.instType) {
+        when (instructions[idx].instType) {
             InstructionType.acc -> {
-                acc += instruction.value
+                acc += instructions[idx].value
                 idx++
             }
-            InstructionType.jmp -> idx += instruction.value
-            InstructionType.nop -> idx++
+            jmp -> idx += instructions[idx].value
+            nop -> idx++
         }
     }
     return Pair(success, acc)
