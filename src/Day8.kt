@@ -4,21 +4,17 @@ fun main() {
     val originalInstructions = readLines("day8/input.in")
         .filter { it != "" }
         .map { it.split(" ") }
-        .map { Instruction(InstructionType.valueOf(it.first()), it.last().toInt()) }.toTypedArray()
+        .map { Instruction(InstructionType.valueOf(it[0]), it[1].toInt()) }.toTypedArray()
 
     val part1 = executeInstructions(originalInstructions.copyOf())
     println(part1.second)
 
     //just brute force part2
-    val replaceElements = originalInstructions.filter { it.instType != acc }
-    for (element in replaceElements) {
+    val indices = originalInstructions.withIndex().filter { it.value.instType != acc }.map { it.index }
+    for (idx in indices) {
         val instructions = originalInstructions.copyOf()
-        val idx = instructions.indexOf(element)
-        if (element.instType == jmp) {
-            instructions[idx] = instructions[idx].copy(instType = nop)
-        } else if (element.instType == nop) {
-            instructions[idx] = instructions[idx].copy(instType = jmp)
-        }
+        val prefType = instructions[idx].instType
+        instructions[idx] = instructions[idx].copy(instType = if(prefType == jmp) nop else jmp)
         val part2 = executeInstructions(instructions)
         if (part2.first) println(part2.second)
     }
