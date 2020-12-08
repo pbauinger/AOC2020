@@ -13,8 +13,8 @@ fun main() {
     val indices = originalInstructions.withIndex().filter { it.value.instType != acc }.map { it.index }
     for (idx in indices) {
         val instructions = originalInstructions.copyOf()
-        val prefType = instructions[idx].instType
-        instructions[idx] = instructions[idx].copy(instType = if(prefType == jmp) nop else jmp)
+        val prevType = instructions[idx].instType
+        instructions[idx] = instructions[idx].copy(instType = if(prevType == jmp) nop else jmp)
         val part2 = executeInstructions(instructions)
         if (part2.first) {
             println(part2.second)
