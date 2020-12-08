@@ -1,44 +1,54 @@
 fun main() {
-    val lines = readLines("day7/input.in").filter { it != "" }
+    val originalInstructions = readLines("day8/input.in")
+        .filter { it != "" }
+        .map { it.split(" ") }
+        .map { Instruction(InstructionType.valueOf(it.first()), it.last().toInt()) }.toTypedArray()
 
-    val bagMapping = mutableMapOf<String, List<Pair<String, Int>>>()
-    for(line in lines) {
-        val parts = line.split(" bags contain ")
-        val name = parts[0]
+    val part1 = executeInstructions(originalInstructions.copyOf())
+    println(part1.second)
 
-        val containedBags = mutableListOf<Pair<String, Int>>()
-        if(parts[1] != "no other bags.") {
-            val containedBagsStr = parts[1].removeSuffix(".").split(",").map { it.trim() }
-            for (bagStr in containedBagsStr) {
-                val fstSpaceIdx = bagStr.indexOf(' ')
-                val lstSpaceIdx = bagStr.lastIndexOf(' ')
-                val bag = Pair(bagStr.substring(fstSpaceIdx + 1, lstSpaceIdx), bagStr.substring(0, fstSpaceIdx).toInt())
-                containedBags.add(bag)
-            }
+    //just brute force part2
+    val replaceElements = originalInstructions.filter { it.instType != InstructionType.acc }
+    for (element in replaceElements) {
+        val instructions = originalInstructions.copyOf()
+        val idx = instructions.indexOf(element)
+        if (element.instType == InstructionType.jmp) {
+            instructions[idx] = instructions[idx].copy(instType = InstructionType.nop)
+        } else if (element.instType == InstructionType.nop) {
+            instructions[idx] = instructions[idx].copy(instType = InstructionType.jmp)
         }
-        bagMapping[name] = containedBags
+        val part2 = executeInstructions(instructions)
+        if (part2.first) println(part2.second)
     }
+}
 
-    fun part1(bagColor: String): Set<String> {
-        val contained = bagMapping.filter { it.value.any { it.first == bagColor } }
-        var set = setOf(bagColor)
-        if(contained.count()==0) return set
-
-        for(v in contained) set = set.union(part1(v.key))
-        return set
+private fun executeInstructions(instructions: Array<Instruction>): Pair<Boolean, Int> {
+    var acc = 0
+    var idx = 0
+    var success = true
+    while (idx < instructions.size) {
+        val instruction = instructions[idx]
+        if (instruction.visited) {
+            success = false
+            break
+        }
+        instructions[idx] = instructions[idx].copy(visited = true)
+        when (instruction.instType) {
+            InstructionType.acc -> {
+                acc += instruction.value
+                idx++
+            }
+            InstructionType.jmp -> idx += instruction.value
+            InstructionType.nop -> idx++
+        }
     }
+    return Pair(success, acc)
+}
 
-    fun part2(bagColor: String): Int {
-        val childs = bagMapping[bagColor]!!
-        if(childs.count() == 0) return 0
+data class Instruction(val instType: InstructionType, val value: Int, val visited: Boolean = false)
 
-        var cnt = 0
-        for(child in childs) cnt += child.second + child.second * part2(child.first)
-        return cnt
-    }
-
-    println(part1("shiny gold").size - 1)
-    println(part2("shiny gold"))
+enum class InstructionType {
+    acc, jmp, nop
 }
 
 
