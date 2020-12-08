@@ -16,7 +16,10 @@ fun main() {
         val prefType = instructions[idx].instType
         instructions[idx] = instructions[idx].copy(instType = if(prefType == jmp) nop else jmp)
         val part2 = executeInstructions(instructions)
-        if (part2.first) println(part2.second)
+        if (part2.first) {
+            println(part2.second)
+            break
+        }
     }
 }
 
