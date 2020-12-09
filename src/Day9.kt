@@ -3,7 +3,7 @@ fun main() {
 
     val numbers = readLines("day9/input.in")
         .filter { it != "" }
-        .map { it.toLong() }.toTypedArray()
+        .map { it.toLong() }
 
     var foundNumber = 0L
     for ((idx, number) in numbers.drop(preambleSize).withIndex()) {
@@ -22,8 +22,8 @@ fun main() {
             idx2++
         }
         if (currNumber == foundNumber) {
-            val corrRange = numbers.copyOfRange(idx1, idx2 + 1)
-            println(corrRange.min()!! + corrRange.max()!!)
+            val sublist = numbers.subList(idx1, idx2 + 1)
+            println(sublist.min()!! + sublist.max()!!)
             break
         }
     }

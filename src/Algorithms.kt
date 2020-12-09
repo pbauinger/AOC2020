@@ -1,7 +1,7 @@
 import java.lang.Integer.max
 
 //endIdx: exclusive
-fun twoSum(numbers: Array<Long>, startIdx: Int, endIdx: Int, target: Long): Long? {
+fun twoSum(numbers: List<Long>, startIdx: Int, endIdx: Int, target: Long): Long? {
     val seen = mutableSetOf<Long>()
     for (i in startIdx until max(numbers.size, endIdx)) {
         val num = numbers[i]
