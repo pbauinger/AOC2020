@@ -1,13 +1,13 @@
-import InstructionType.*
+import InstructionType_old.*
 
 fun main() {
     val originalInstructions = readLines("day8/input.in")
         .filter { it != "" }
         .map { it.split(" ") }
-        .map { Instruction(InstructionType.valueOf(it[0]), it[1].toInt()) }.toTypedArray()
+        .map { Instruction_old(InstructionType_old.valueOf(it[0]), it[1].toInt()) }.toTypedArray()
 
-    val part1 = executeInstructions(originalInstructions.copyOf())
-    println(part1.second)
+    val (_, part1Acc) = executeInstructions(originalInstructions.copyOf())
+    println(part1Acc)
 
     //just brute force part2
     val indices = originalInstructions.withIndex().filter { it.value.instType != acc }.map { it.index }
@@ -15,15 +15,15 @@ fun main() {
         val instructions = originalInstructions.copyOf()
         val prevType = instructions[idx].instType
         instructions[idx] = instructions[idx].copy(instType = if(prevType == jmp) nop else jmp)
-        val part2 = executeInstructions(instructions)
-        if (part2.first) {
-            println(part2.second)
+        val (success, part2Acc) = executeInstructions(instructions)
+        if (success) {
+            println(part2Acc)
             break
         }
     }
 }
 
-private fun executeInstructions(instructions: Array<Instruction>): Pair<Boolean, Int> {
+private fun executeInstructions(instructions: Array<Instruction_old>): Pair<Boolean, Int> {
     var acc = 0; var idx = 0
     var success = true
     while (idx < instructions.size) {
@@ -33,7 +33,7 @@ private fun executeInstructions(instructions: Array<Instruction>): Pair<Boolean,
         }
         instructions[idx] = instructions[idx].copy(visited = true)
         when (instructions[idx].instType) {
-            InstructionType.acc -> {
+            InstructionType_old.acc -> {
                 acc += instructions[idx].value
                 idx++
             }
@@ -44,9 +44,9 @@ private fun executeInstructions(instructions: Array<Instruction>): Pair<Boolean,
     return Pair(success, acc)
 }
 
-data class Instruction(val instType: InstructionType, val value: Int, val visited: Boolean = false)
+private data class Instruction_old(val instType: InstructionType_old, val value: Int, val visited: Boolean = false)
 
-enum class InstructionType {
+private enum class InstructionType_old {
     acc, jmp, nop
 }
 
