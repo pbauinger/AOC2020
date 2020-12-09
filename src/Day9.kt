@@ -5,32 +5,27 @@ fun main() {
         .filter { it != "" }
         .map { it.toLong() }.toTypedArray()
 
-    var idx = preambleSize
     var foundNumber = 0L
-    for (number in numbers.drop(preambleSize)) {
-        val twoSum = twoSum(numbers, idx - preambleSize, idx, number)
-        if (twoSum == null) {
+    for ((idx, number) in numbers.drop(preambleSize).withIndex()) {
+        if (twoSum(numbers, idx, idx + preambleSize, number) == null) {
             println(number)
             foundNumber = number
             break
         }
-        idx++
     }
 
-    idx = 0
-    while (idx < numbers.size) {
+    for (idx1 in numbers.indices) {
         var currNumber = 0L
-        var idx2 = idx + 1
+        var idx2 = idx1 + 1
         while (currNumber < foundNumber) {
             currNumber += numbers[idx2]
             idx2++
         }
         if (currNumber == foundNumber) {
-            val corrRange = numbers.copyOfRange(idx, idx2 + 1)
+            val corrRange = numbers.copyOfRange(idx1, idx2 + 1)
             println(corrRange.min()!! + corrRange.max()!!)
             break
         }
-        idx++
     }
 }
 
