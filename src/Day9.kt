@@ -26,7 +26,7 @@ fun main() {
             idx2++
         }
         if(currNumber == foundNumber) {
-            val corrRange = numbers.copyOfRange(idx, idx2)
+            val corrRange = numbers.copyOfRange(idx, idx2+1)
             println(corrRange.min()!! + corrRange.max()!!)
             break
         }
