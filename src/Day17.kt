@@ -19,10 +19,14 @@ fun main() {
         }
 
     for (i in 1..6) {
-        val toAdd = gamefield.flatMap { it.neighbors() }.groupingBy { it }.eachCount().filterValues { it == 3 }.keys
+        val toAdd = gamefield
+            .flatMap { it.neighbors() }
+            .groupingBy { it }
+            .eachCount()
+            .filterValues { it == 3 }.keys
         val toRemove = gamefield.filter { countNeighbors(it) !in 2..3 }
 
-        gamefield = (gamefield + toAdd) - toRemove;
+        gamefield = (gamefield + toAdd) - toRemove
     }
     print(gamefield.size)
 }
