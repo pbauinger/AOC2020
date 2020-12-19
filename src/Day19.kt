@@ -1,11 +1,11 @@
 fun main() {
     val data = readText("day19/input.in").split("\n\n")
 
-    val ruleTextInput = data[0].split("\n")
+    val checkTextInput = data[0].split("\n")
     val messageTextInput = data[1].split("\n").toMutableList()
 
-    val ruleInput = ruleTextInput.map { it.split(":") }.map { it[0].trim().toInt() to it[1].trim() }.toMap()
-    val checks = createChecks(ruleInput)
+    val checkInput = checkTextInput.map { it.split(":") }.map { it[0].trim().toInt() to it[1].trim() }.toMap()
+    val checks = createChecks(checkInput)
 
     var cnt = 0
     for (i in 1..50) for (j in 1..50) { //just to be sure :D
@@ -46,18 +46,17 @@ interface CheckI {
 }
 
 class Check(override val id: Int, value: String, checks: Map<Int, CheckI>) : CheckI {
-    private val subchecks = value.split(" | ").map { it.split(" ").map { checks[it.toInt()]!! } }
+    private val disjunction = value.split(" | ").map { it.split(" ").map { checks[it.toInt()]!! } }
 
     override fun check(input: String, rep1: Int, rep2: Int): String? {
         if (input.isEmpty()) return null
 
         val rep = if (id == 8) rep1 else if (id == 11) rep2 else 1
-
         var curr: String? = input
-        disjunction@ for (disjunction in subchecks) {
+        disjunction@ for (conjunction in disjunction) {
             curr = input //backup value
-            for (conjunction in disjunction) for (i in 0 until rep) {
-                curr = conjunction.check(curr!!, rep1, rep2)
+            for (check in conjunction) for (i in 0 until rep) {
+                curr = check.check(curr!!, rep1, rep2)
                 if (curr == null) continue@disjunction
             }
             return curr
