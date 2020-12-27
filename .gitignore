@@ -35,4 +35,4 @@ build/
 src/**/Day5_refactored.kt
 
 # too ugly
-src/**/Day15_refactored.kt
+src/**/Day15.kt
