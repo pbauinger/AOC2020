@@ -25,7 +25,14 @@ hs_err_pid*
 *.iml
 .idea/
 out/
+gradle/
+.gradle/
+build/
 
 *.out
 
-src/Day5_refactored.kt
+# not entirely my code, so ignored
+src/**/Day5_refactored.kt
+
+# too ugly
+src/**/Day15_refactored.kt

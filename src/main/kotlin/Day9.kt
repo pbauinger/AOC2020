@@ -23,7 +23,7 @@ fun main() {
         }
         if (currNumber == foundNumber) {
             val sublist = numbers.subList(idx1, idx2 + 1)
-            println(sublist.min()!! + sublist.max()!!)
+            println(sublist.minOrNull()!! + sublist.maxOrNull()!!)
             break
         }
     }
